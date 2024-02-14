@@ -1,55 +1,56 @@
-import { Chat, Email,} from "@mui/icons-material";
+import { Chat, Email } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(response => response.json())
-        .then(json => {
-          setPosts(json);
-        })
-        .catch(error => {
-          console.error('Error fetching posts:', error);
-        });
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const json = await response.json();
+        setPosts(json.map(post => ({ ...post, comments: [], showComments: false })));
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
     };
 
     fetchPosts();
   }, []);
 
+  const handleViewComments = async (postId) => {
+    setPosts(prevPosts => {
+      const updatedPosts = prevPosts.map(post =>
+        post.id === postId ? { ...post, showComments: !post.showComments } : post
+      );
+      if (updatedPosts.find(post => post.id === postId && post.showComments && post.comments.length === 0)) {
+        fetchComments(postId);
+      }
+      return updatedPosts;
+    });
+  };
+
   const fetchComments = async (postId) => {
     try {
       const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
       const comments = await response.json();
-      return comments;
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
+          post.id === postId ? { ...post, comments } : post
+        )
+      );
     } catch (error) {
       console.error('Error fetching comments:', error);
-      return [];
     }
   };
 
-  const handleViewComments = async (postId) => {
-    if (selectedPost === postId) {
-      setSelectedPost(null);
-    } else {
-      const comments = await fetchComments(postId);
-      setSelectedPost(postId);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) => (post.id === postId ? { ...post, comments } : post))
-      );
-    }
-  };
   return (
     <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
       <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
-       
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h4" fontFamily="serif " >JRK-PROJECT</Typography>
+          <Typography variant="h4" fontFamily="serif" color={'black'}>JRK-PROJECT</Typography>
           <Box display="flex" alignItems="center">
             <Link href="/" passHref>
               <Button>
@@ -81,13 +82,12 @@ export default function Home() {
                     style={{ color: 'blue', cursor: 'pointer' }}
                     onClick={() => handleViewComments(post.id)}
                   >
-                    View Comments
+                    {post.showComments ? 'Hide Comments' : 'View Comments'}
                   </Typography>
-                  <Grid item xs={12} sm={6}>
-                  {selectedPost && posts.find(post => post.id === selectedPost)?.comments && (
-                    <Box>
+                  {post.showComments && post.comments.length > 0 && (
+                    <Box mt={2} p={1} bgcolor="#f0f0f0" borderRadius={4}>
                       <Typography variant="h6">Comments:</Typography>
-                      {posts.find(post => post.id === selectedPost).comments.map((comment, index) => (
+                      {post.comments.map((comment, index) => (
                         <Box key={index} mt={1}>
                           <Typography variant="body2" fontFamily="georgia">
                             <Email /> {comment.email}
@@ -99,7 +99,6 @@ export default function Home() {
                       ))}
                     </Box>
                   )}
-                </Grid>
                 </CardContent>
               </Card>
             </Grid>
@@ -107,7 +106,5 @@ export default function Home() {
         </Grid>
       </Grid>
     </Box>
-    
-   
   );
 }

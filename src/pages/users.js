@@ -37,7 +37,7 @@ export default function Home() {
         
         {/* Navigation */}
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h4" fontFamily="serif ">JRK-PROJECT</Typography>
+          <Typography variant="h4" fontFamily="serif " color={'black'}>JRK-PROJECT</Typography>
           <Box display="flex" alignItems="center">
             <Link href="/" passHref>
               <Button>

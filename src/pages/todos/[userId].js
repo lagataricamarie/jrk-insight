@@ -30,7 +30,7 @@ export default function UserTodos() {
     <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
       
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-        <Typography variant="h4" fontFamily="serif ">JRK-PROJECT</Typography>
+        <Typography variant="h4" fontFamily="serif " color={'black'}>JRK-PROJECT</Typography>
         <Box display="flex" alignItems="center">
           <Link href="/" passHref>
             <Button>
@@ -50,11 +50,11 @@ export default function UserTodos() {
         </Box>
       </Grid>
       <Grid item xs={12}>
-          <Typography variant="h5">TODOS for User {userId}</Typography>
+          <Typography variant="h5" fontColor="#050315">TODOS for User {userId}</Typography>
           {todos.map((todo, index) => (
             <Box key={todo.id} mb={2}>
-              <Typography variant="body2" fontFamily="georgia">{index + 1}. Title: {todo.title}</Typography>
-              <Typography variant="body2" fontFamily="georgia ">Completed: {todo.completed ? 'True' : 'False'}</Typography>
+              <Typography variant="body2" fontFamily="georgia" fontColor="#050315">{index + 1}. Title: {todo.title}</Typography>
+              <Typography variant="body2" fontFamily="georgia " fontColor="#050315">Completed: {todo.completed ? 'True' : 'False'}</Typography>
             </Box>
           ))}
         </Grid>
