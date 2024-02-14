@@ -50,7 +50,7 @@ export default function UserTodos() {
         </Box>
       </Grid>
       <Grid item xs={12}>
-          <Typography variant="h5" fontColor="#050315">TODOS for User {userId}</Typography>
+          <Typography variant="h5" fontColor="#050315" color={'black'}>TODOS for User {userId}</Typography>
           {todos.map((todo, index) => (
             <Box key={todo.id} mb={2}>
               <Typography variant="body2" fontFamily="georgia" color={'black'}>{index + 1}. Title: {todo.title}</Typography>
