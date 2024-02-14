@@ -1,7 +1,8 @@
 // pages/todos/[userId].js
 import { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function UserTodos() {
   const router = useRouter();
@@ -25,14 +26,40 @@ export default function UserTodos() {
   }, [userId]);
 
   return (
-    <div>
-      <Typography variant="h4">TODOS for User {userId}</Typography>
-      {todos.map((todo) => (
-        <div key={todo.id}>
-          <Typography variant="body2">{todo.title}</Typography>
-          {/* Add more details if needed */}
-        </div>
-      ))}
-    </div>
+    <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
+    <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
+      
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+        <Typography variant="h4" fontFamily="serif ">JRK-PROJECT</Typography>
+        <Box display="flex" alignItems="center">
+          <Link href="/" passHref>
+            <Button>
+              Dashboard
+            </Button>
+          </Link>
+          <Link href="/posts" passHref>
+            <Button>
+              Posts
+            </Button>
+          </Link>
+          <Link href="/users" passHref>
+            <Button>
+              Users
+            </Button>
+          </Link>
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+          <Typography variant="h5">TODOS for User {userId}</Typography>
+          {todos.map((todo, index) => (
+            <Box key={todo.id} mb={2}>
+              <Typography variant="body2" fontFamily="georgia">{index + 1}. Title: {todo.title}</Typography>
+              <Typography variant="body2" fontFamily="georgia ">Completed: {todo.completed ? 'True' : 'False'}</Typography>
+            </Box>
+          ))}
+        </Grid>
+      </Grid>
+    </Box>
+  
   );
 }

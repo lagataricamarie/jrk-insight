@@ -1,8 +1,11 @@
-import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Chat, Email,} from "@mui/icons-material";
+import { Box, Button, Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -19,8 +22,6 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  const [expandedPostId, setExpandedPostId] = useState(null);
-
   const fetchComments = async (postId) => {
     try {
       const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
@@ -33,49 +34,80 @@ export default function Home() {
   };
 
   const handleViewComments = async (postId) => {
-    if (expandedPostId === postId) {
-      // If already expanded, hide comments
-      setExpandedPostId(null);
+    if (selectedPost === postId) {
+      setSelectedPost(null);
     } else {
-      // If not expanded, fetch and show comments
       const comments = await fetchComments(postId);
-      setExpandedPostId(postId);
+      setSelectedPost(postId);
       setPosts((prevPosts) =>
         prevPosts.map((post) => (post.id === postId ? { ...post, comments } : post))
       );
     }
   };
-
   return (
-    <Grid container spacing={2}>
-      {posts.map((post, index) => (
-        <Grid item lg={12} md={6} sm={3} key={index}>
-          <Card>
-            <CardHeader title={post.title} subheader={`User ID: ${post.userId}`} />
-            <CardContent>
-              <Typography variant="body2">{post.body}</Typography>
-              <Typography
-                variant="body2"
-                style={{ color: 'blue', cursor: 'pointer' }}
-                onClick={() => handleViewComments(post.id)}
-              >
-                View Comments
-              </Typography>
-              {expandedPostId === post.id && post.comments && (
-                <div>
-                  <Typography variant="subtitle2">Comments:</Typography>
-                  {post.comments.map((comment, commentIndex) => (
-                    <div key={commentIndex}>
-                      <Typography variant="body2">Comment: {comment.body}</Typography>
-                      <Typography variant="body2">Email: {comment.email}</Typography>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+    <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
+      <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
+       
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+          <Typography variant="h4" fontFamily="serif " >JRK-PROJECT</Typography>
+          <Box display="flex" alignItems="center">
+            <Link href="/" passHref>
+              <Button>
+                Dashboard
+              </Button>
+            </Link>
+            <Link href="/posts" passHref>
+              <Button>
+                Posts
+              </Button>
+            </Link>
+            <Link href="/users" passHref>
+              <Button>
+                Users
+              </Button>
+            </Link>
+          </Box>
         </Grid>
-      ))}
-    </Grid>
+        <Grid container spacing={2}>
+          {posts.map((post, index) => (
+            <Grid item lg={12} md={6} sm={6} key={index}>
+              <Card>
+                <CardHeader fontFamily="times new roman" title={post.title} subheader={`User ID: ${post.userId}`} />
+                <CardContent>
+                  <Typography variant="body2" fontFamily="times new roman">{post.body}</Typography>
+                  <Typography
+                    fontFamily="serif"
+                    variant="body2"
+                    style={{ color: 'blue', cursor: 'pointer' }}
+                    onClick={() => handleViewComments(post.id)}
+                  >
+                    View Comments
+                  </Typography>
+                  <Grid item xs={12} sm={6}>
+                  {selectedPost && posts.find(post => post.id === selectedPost)?.comments && (
+                    <Box>
+                      <Typography variant="h6">Comments:</Typography>
+                      {posts.find(post => post.id === selectedPost).comments.map((comment, index) => (
+                        <Box key={index} mt={1}>
+                          <Typography variant="body2" fontFamily="georgia">
+                            <Email /> {comment.email}
+                          </Typography>
+                          <Typography variant="body2" fontFamily="georgia">
+                            <Chat /> {comment.body}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                  )}
+                </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+    </Box>
+    
+   
   );
 }

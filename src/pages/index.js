@@ -1,7 +1,8 @@
-import { Button, Typography, Grid, Box } from "@mui/material";
+import { Button, Typography, Grid, Box, Paper, IconButton } from "@mui/material";
 import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
+import { PostAdd, Group, Comment, PlaylistAddCheck } from '@mui/icons-material'; // Icons
 import 'chart.js/auto';
 
 export default function Home() {
@@ -36,16 +37,15 @@ export default function Home() {
       setComments(commentsData);
       setTodos(todosData);
 
-      // Update chart data
       setChartData({
         labels: ['Posts', 'Users', 'Comments', 'Todos'],
         datasets: [
           {
             label: 'Total Count',
             data: [postsData.length, usersData.length, commentsData.length, todosData.length],
-            backgroundColor: 'rgba(75,192,192,0.2)',
-            borderColor: 'rgba(75,192,192,1)',
-            borderWidth: 1,
+            backgroundColor: ['#a6b6eb', '#a6b6eb', '#a6b6eb', '#a6b6eb'], 
+            borderColor: '#a1eabc',
+            borderWidth: 3,
           },
         ],
       });
@@ -55,68 +55,104 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Cleanup: Destroy the existing chart
     if (chartRef.current) {
       chartRef.current.destroy();
     }
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <div>
-          <Typography variant="h2" >Dashboard</Typography>
+    <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
+      <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
+       
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+          <Typography variant="h4" fontFamily="serif ">JRK-PROJECT</Typography>
+          <Box display="flex" alignItems="center">
+            <Link href="/" passHref>
+              <Button>
+                Dashboard
+              </Button>
+            </Link>
+            <Link href="/posts" passHref>
+              <Button>
+                Posts
+              </Button>
+            </Link>
+            <Link href="/users" passHref>
+              <Button>
+                Users
+              </Button>
+            </Link>
+          </Box>
+        </Grid>
 
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Typography variant="body1">Total Posts: {posts.length}</Typography>
+        <Grid item xs={12}>
+          <Box p={2} height="100%">
+            <Grid container spacing={2} sx={{ flexWrap: 'nowrap' }}>
+              <Grid item xs={6}>
+                <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'left', width: '100%', height: '100%' }}>
+                  <IconButton sx={{ mr: 1 }}>
+                    <PostAdd />
+                  </IconButton>
+                  <Box>
+                  <Typography variant="body4">Posts</Typography>
+                  <Typography fontSize="30px">{posts.length}</Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'center', width: '100%', height: '100%' }}>
+                  <IconButton sx={{ mr: 1 }}>
+                    <Group />
+                  </IconButton>
+                  <Box>
+                  <Typography variant="body4">Users</Typography>
+                  <Typography fontSize="30px">{users.length}</Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'center', width: '100%', height: '100%' }}>
+                  <IconButton sx={{ mr: 1 }}>
+                    <Comment />
+                  </IconButton>
+                  <Box>
+                  <Typography variant="body4">Comments</Typography>
+                  <Typography fontSize="30px">{comments.length}</Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'center', width: '100%', height: '100%' }}>
+                  <IconButton sx={{ mr: 1 }}>
+                    <PlaylistAddCheck />
+                  </IconButton>
+                  <Box>
+                    <Typography variant="body4">TODOS</Typography>
+                    <Typography fontSize="30px">{todos.length}</Typography>
+                  </Box>
+                </Paper>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">Total Users: {users.length}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">Total Comments: {comments.length}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">Total TODOS: {todos.length}</Typography>
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Link href="/posts" passHref>
-                <Button component="" variant="outlined">
-                  Posts
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item xs={6}>
-              <Link href="/users" passHref>
-                <Button component="" variant="outlined">
-                  Users
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
-        </div>
+            <Box mt={2} display="flex" justifyContent="center" height="75%">
+              <Box width="75%">
+                <Box height="100%">
+                  {chartData && (
+                    <Bar
+                      ref={chartRef}
+                      data={chartData}
+                      options={{
+                        maintainAspectRatio: false,
+                        responsive: true,
+                      }}
+                    
+                    />
+                  )}
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
       </Grid>
-
-      <Grid item xs={6}>
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh" minWidth="100vh">
-          {chartData && (
-            <Bar
-              ref={chartRef}
-              data={chartData}
-              options={{
-                maintainAspectRatio: false,
-                responsive: true,
-              }}
-              height={300} // set to desired height
-              width={300} // set to desired width
-            />
-          )}
-        </Box>
-      </Grid>
-    </Grid>
+    </Box>
   );
 }
