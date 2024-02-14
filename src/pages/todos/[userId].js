@@ -53,8 +53,8 @@ export default function UserTodos() {
           <Typography variant="h5" fontColor="#050315">TODOS for User {userId}</Typography>
           {todos.map((todo, index) => (
             <Box key={todo.id} mb={2}>
-              <Typography variant="body2" fontFamily="georgia" fontColor="#050315">{index + 1}. Title: {todo.title}</Typography>
-              <Typography variant="body2" fontFamily="georgia " fontColor="#050315">Completed: {todo.completed ? 'True' : 'False'}</Typography>
+              <Typography variant="body2" fontFamily="georgia" color={'black'}>{index + 1}. Title: {todo.title}</Typography>
+              <Typography variant="body2" fontFamily="georgia " color={'black'}>Completed: {todo.completed ? 'True' : 'False'}</Typography>
             </Box>
           ))}
         </Grid>
