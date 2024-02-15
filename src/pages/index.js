@@ -37,7 +37,7 @@ export default function Home() {
       setComments(commentsData);
       setTodos(todosData);
 
-      setChartData({
+      setChartData({ fontWeight: 'bold',
         labels: ['Posts', 'Users', 'Comments', 'Todos'],
         datasets: [
           {
@@ -65,7 +65,7 @@ export default function Home() {
       <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
        
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h4" fontFamily="serif " color={'black'}>JRK-PROJECT</Typography>
+          <Typography variant="h3" fontFamily="serif " color={'black'}>JRK-PROJECT</Typography>
           <Box display="flex" alignItems="center">
             <Link href="/" passHref>
               <Button>
@@ -84,13 +84,13 @@ export default function Home() {
             </Link>
           </Box>
         </Grid>
-
+        
         <Grid item xs={12}>
           <Box p={2} height="100%">
             <Grid container spacing={2} sx={{ flexWrap: 'nowrap' }}>
               <Grid item xs={6}>
                 <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'left', width: '100%', height: '100%' }}>
-                  <IconButton sx={{ mr: 1 }}>
+                  <IconButton sx={{ mr: 4, color:'#5db330' }}>
                     <PostAdd />
                   </IconButton>
                   <Box>
@@ -101,7 +101,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={6}>
                 <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'center', width: '100%', height: '100%' }}>
-                  <IconButton sx={{ mr: 1 }}>
+                  <IconButton sx={{ mr: 4, color:'#5db330' }}>
                     <Group />
                   </IconButton>
                   <Box>
@@ -112,7 +112,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={6}>
                 <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'center', width: '100%', height: '100%' }}>
-                  <IconButton sx={{ mr: 1 }}>
+                  <IconButton sx={{ mr: 4, color:'#5db330' }}>
                     <Comment />
                   </IconButton>
                   <Box>
@@ -123,7 +123,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={6}>
                 <Paper elevation={3} sx={{ p: 2, display: 'flex', backgroundColor:'#d2e3f4', alignItems: 'center', width: '100%', height: '100%' }}>
-                  <IconButton sx={{ mr: 1 }}>
+                  <IconButton sx={{ mr: 4, color:'#5db330' }}>
                     <PlaylistAddCheck />
                   </IconButton>
                   <Box>
@@ -135,7 +135,7 @@ export default function Home() {
             </Grid>
             <Box mt={2} display="flex" justifyContent="center" height="75%">
               <Box width="75%">
-                <Box height="100%">
+                <Box height="100%" >
                   {chartData && (
                     <Bar
                       ref={chartRef}
@@ -143,6 +143,7 @@ export default function Home() {
                       options={{
                         maintainAspectRatio: false,
                         responsive: true,
+                        
                       }}
                     
                     />

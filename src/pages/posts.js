@@ -1,10 +1,16 @@
 import { Chat, Email } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const router = useRouter();
+
+  const activeLinkStyle = {
+    color: 'black'
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -49,21 +55,21 @@ export default function Home() {
   return (
     <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
       <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h4" fontFamily="serif" color={'black'}>JRK-PROJECT</Typography>
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+          <Typography variant="h3" fontFamily="serif" color={'black'}>JRK-PROJECT</Typography>
           <Box display="flex" alignItems="center">
             <Link href="/" passHref>
-              <Button>
+              <Button sx={router.pathname === '/' ? activeLinkStyle : null}>
                 Dashboard
               </Button>
             </Link>
             <Link href="/posts" passHref>
-              <Button>
+              <Button sx={router.pathname === '/posts' ? activeLinkStyle : null}>
                 Posts
               </Button>
             </Link>
             <Link href="/users" passHref>
-              <Button>
+              <Button sx={router.pathname === '/users' ? activeLinkStyle : null}>
                 Users
               </Button>
             </Link>
@@ -73,7 +79,7 @@ export default function Home() {
           {posts.map((post, index) => (
             <Grid item lg={12} md={6} sm={6} key={index}>
               <Card>
-                <CardHeader fontFamily="times new roman" title={post.title} subheader={`User ID: ${post.userId}`} />
+                <CardHeader title={post.title} subheader={`User ID: ${post.userId}`} />
                 <CardContent>
                   <Typography variant="body2" fontFamily="times new roman">{post.body}</Typography>
                   <Typography

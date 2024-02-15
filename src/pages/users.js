@@ -2,9 +2,15 @@ import { Card, CardContent, CardHeader, Grid, Typography, Button, Box } from "@m
 import { useEffect, useState } from "react";
 import Link from 'next/link';
 import { Person2Outlined } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
+  const router = useRouter();
+
+  const activeLinkStyle = {
+    color: 'black'
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -34,28 +40,27 @@ export default function Home() {
   return (
     <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
       <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
-        
-        {/* Navigation */}
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h4" fontFamily="serif " color={'black'}>JRK-PROJECT</Typography>
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+          <Typography variant="h3" fontFamily="serif" color={'black'}>JRK-PROJECT</Typography>
           <Box display="flex" alignItems="center">
             <Link href="/" passHref>
-              <Button>
+              <Button sx={router.pathname === '/' ? activeLinkStyle : null}>
                 Dashboard
               </Button>
             </Link>
             <Link href="/posts" passHref>
-              <Button>
+              <Button sx={router.pathname === '/posts' ? activeLinkStyle : null}>
                 Posts
               </Button>
             </Link>
             <Link href="/users" passHref>
-              <Button>
+              <Button sx={router.pathname === '/users' ? activeLinkStyle : null}>
                 Users
               </Button>
             </Link>
           </Box>
         </Grid>
+      
         <Grid container spacing={2}>
           {users.map((user, index) => (
             <Grid item lg={4} md={6} sm={12} key={index}>
@@ -63,7 +68,7 @@ export default function Home() {
                 <CardHeader
                   avatar={<Person2Outlined />}
                   title={user.name}
-                  subheader={`UserID: ${user.id}`}
+                  subheader={`Email: ${user.email}` }
                 />
                 <CardContent>
                   <Link href={`/todos/${user.id}`} passHref>
