@@ -41,7 +41,7 @@ export default function Home() {
     <Box sx={{ backgroundColor: '#edeff5', minHeight: '100vh' }}>
       <Grid container spacing={2} sx={{ height: '100%' }} padding="25px 50px 75px">
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h3" fontFamily="serif" color={'black'}>JRK-PROJECT</Typography>
+          <Typography variant="h3" fontFamily="serif" color={'black'}>JRK-INSIGHT</Typography>
           <Box display="flex" alignItems="center">
             <Link href="/" passHref>
               <Button sx={router.pathname === '/' ? activeLinkStyle : null}>
